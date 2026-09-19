@@ -588,7 +588,7 @@
     const wrap = document.getElementById('watermark');
     const COUNT = 6;
     const SPEED = 22; // px per sekund
-    const OUT_MARGIN = 160; // hur långt utanför rutan den flyger innan den despawnar (större än bildens storlek, så den alltid är helt osynlig innan den försvinner/dyker upp)
+    const OUT_MARGIN = 110; // hur långt utanför rutan den flyger innan den despawnar (större än bildens storlek, så den alltid är helt osynlig innan den försvinner/dyker upp)
     const items = [];
 
     function rand(min, max){ return min + Math.random() * (max - min); }
@@ -621,7 +621,7 @@
     // flyger sedan in mot ett slumpmässigt mål inne i rutan.
     function respawnOutside(item, W, H){
       const edge = Math.floor(rand(0, 4)); // 0=topp,1=höger,2=botten,3=vänster
-      const margin = 160; // samma marginal som OUT_MARGIN, så den spawnar in helt osedd
+      const margin = OUT_MARGIN; // samma marginal som OUT_MARGIN, så den spawnar in helt osedd
       let x, y;
       if (edge === 0)      { x = rand(0, W); y = -margin; }
       else if (edge === 1) { x = W + margin; y = rand(0, H); }
