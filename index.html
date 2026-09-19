@@ -265,74 +265,272 @@
     flex-shrink:0;
     letter-spacing:.2px;
   }
+
+  /* ===================== STARTSIDA / NAVIGATION ===================== */
+  /* Detta är startsidan som visas innan man valt vilket kort man vill
+     se. Den fyller precis samma yta som kortvyn (.phone), så bytet
+     mellan sidorna sker bara genom att visa/dölja med .hidden. */
+  .nav-screen{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px);
+  }
+  .nav-inner{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    padding:28px 24px;
+    overflow-y:auto;
+    min-height:0;
+  }
+  .nav-heading{
+    font-size:26px;
+    font-weight:800;
+    color:#fff;
+    margin:0 0 6px;
+    letter-spacing:-.3px;
+  }
+  .nav-subheading{
+    font-size:14px;
+    font-weight:500;
+    color:#8a8580;
+    margin:0 0 26px;
+  }
+  .nav-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  /* Varje knapp = ett "kort" man kan lägga till/döpa om. Rubriken
+     (.nav-btn-title) är namnet man ser innan man klickar. */
+  .nav-btn{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    width:100%;
+    padding:18px 20px;
+    border-radius:16px;
+    background:#1c1c1c;
+    border:1px solid #2a2a2a;
+    color:#fff;
+    text-align:left;
+    cursor:pointer;
+    font-family:'Manrope',sans-serif;
+    transition:background .15s ease, transform .15s ease;
+  }
+  .nav-btn:active{
+    background:#262626;
+    transform:scale(.98);
+  }
+  .nav-btn-text{
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+  }
+  .nav-btn-title{
+    font-size:16px;
+    font-weight:700;
+  }
+  .nav-btn-sub{
+    font-size:12.5px;
+    font-weight:500;
+    color:#8a8580;
+  }
+  .nav-btn-arrow{
+    flex-shrink:0;
+    width:18px;
+    height:18px;
+    color:#6b6b6b;
+  }
+  .nav-btn-arrow svg{width:100%;height:100%;}
+
+  .card-view{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .hidden{display:none !important;}
 </style>
 </head>
 <body>
 
 <div class="phone">
 
-  <div class="stage">
-   <div class="watermark" id="watermark"></div>
-   <div class="card-wrap">
-    <div class="card-shadow" id="cardShadow"></div>
-    <div class="card" id="card">
-
-      <!-- FRONT — bilden fyller hela kortet -->
-      <div class="face front">
-        <!-- ===== LÄGG DIN BILDFIL HÄR =====
-             Byt ut "din-bild.jpg" nedan mot sökvägen/filnamnet
-             till din egen bild (t.ex. "bilder/mitt-foto.jpg").
-        -->
-        <div class="front-photo">
-          <img src="image/IMG_3444.jpg" alt="Kortbild">
-        </div>
-      </div>
-
-      <!-- BACK — bilden fyller hela kortet -->
-      <div class="face back">
-        <!-- ===== LÄGG DIN BILDFIL HÄR (baksida) =====
-             Byt ut "din-bild-baksida.jpg" nedan mot sökvägen/filnamnet
-             till din egen bild.
-        -->
-        <div class="back-photo">
-          <img src="image/IMG_3441.jpeg" alt="Kortbild baksida">
-        </div>
-      </div>
-
+  <!-- ============ STARTSIDA (NAVIGATION) ============
+       Denna sida visas först. Knapparna genereras automatiskt av
+       JS-koden längst ner (utifrån CARDS-listan), så för att lägga
+       till/ändra/döpa om kort — rör INTE denna HTML. Gå istället ner
+       till "===== DINA KORT HÄR =====" i <script> och redigera
+       CARDS-listan där. -->
+  <div class="nav-screen" id="navScreen">
+    <div class="nav-inner">
+      <h1 class="nav-heading">Mina kort</h1>
+      <p class="nav-subheading">Välj vilket kort du vill visa</p>
+      <div class="nav-list" id="navList"><!-- Knappar skapas av JS --></div>
     </div>
-   </div>
   </div>
 
-  <div class="modal-footer">
-    <!-- ===== LÄGG DIN LÄNK HÄR =====
-         Byt ut "https://exempel.se" nedan mot länken du vill att
-         "Stäng"-knappen ska öppna. -->
-    <a class="close-btn" href="https://exempel.se">Stäng</a>
+  <!-- ============ KORTVYN ============
+       Visas när man klickat på ett kort i navigationen. -->
+  <div class="card-view hidden" id="cardView">
 
-    <div class="dots">
-      <div class="dot active"><span>1</span></div>
-      <div class="dot"><span>2</span></div>
-      <div class="dot"><span>3</span></div>
+    <div class="stage">
+     <div class="watermark" id="watermark"></div>
+     <div class="card-wrap">
+      <div class="card-shadow" id="cardShadow"></div>
+      <div class="card" id="card">
+
+        <!-- FRONT — bilden fyller hela kortet -->
+        <div class="face front">
+          <div class="front-photo">
+            <img id="frontImg" src="" alt="Kortbild">
+          </div>
+        </div>
+
+        <!-- BACK — bilden fyller hela kortet -->
+        <div class="face back">
+          <div class="back-photo">
+            <img id="backImg" src="" alt="Kortbild baksida">
+          </div>
+        </div>
+
+      </div>
+     </div>
     </div>
 
-    <div class="footer-icons">
-      <!-- Lägg din egen QR-kodbild här: byt src="din-qr-kod.png"
-           mot sökvägen/filnamnet till din egen QR-kodbild. -->
-      <button class="icon-btn qr-btn" aria-label="QR-kod">
-        <img src="image/tr.png" alt="QR-kod">
-      </button>
-      <button class="icon-btn" aria-label="Uppdatera" id="refreshBtn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M4 4v6h6M20 20v-6h-6"/>
-          <path d="M20 10a8 8 0 00-14.9-3.5M4 14a8 8 0 0014.9 3.5"/>
-        </svg>
-      </button>
+    <div class="modal-footer">
+      <!-- "Stäng" tar dig tillbaka till startsidan/navigationen. -->
+      <button class="close-btn" id="closeBtn">Stäng</button>
+
+      <div class="dots">
+        <div class="dot active"><span>1</span></div>
+        <div class="dot"><span>2</span></div>
+        <div class="dot"><span>3</span></div>
+      </div>
+
+      <div class="footer-icons">
+        <!-- Lägg din egen QR-kodbild här: byt src="din-qr-kod.png"
+             mot sökvägen/filnamnet till din egen QR-kodbild. -->
+        <button class="icon-btn qr-btn" aria-label="QR-kod">
+          <img src="image/tr.png" alt="QR-kod">
+        </button>
+        <button class="icon-btn" aria-label="Uppdatera" id="refreshBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4v6h6M20 20v-6h-6"/>
+            <path d="M20 10a8 8 0 00-14.9-3.5M4 14a8 8 0 0014.9 3.5"/>
+          </svg>
+        </button>
+      </div>
     </div>
+
   </div>
 
 </div>
 
 <script>
+  /* ===== GEMENSAM BAKSIDA =====
+     Alla kort delar samma baksida — bara framsidan skiljer sig
+     mellan korten. Byt sökvägen nedan mot din egen baksidesbild. */
+  const SHARED_BACK = 'image/IMG_3441.jpeg';
+
+  /* ===== DINA KORT HÄR =====
+     Lägg till, ta bort eller döp om kort genom att redigera listan
+     nedan. Varje kort behöver bara:
+       name  – rubriken som syns på knappen i navigationen
+       sub   – (valfritt) en kort undertext under rubriken, kan tas bort
+       front – sökväg till bilden på framsidan
+     (Baksidan sätts automatiskt till SHARED_BACK ovan för alla kort.) */
+  const CARDS = [
+    {
+      name: 'Fabian',
+      sub: 'Tryck för att visa',
+      front: 'image/Ggg.jpg'
+    },
+    {
+      name: 'David',
+      sub: 'Tryck för att visa',
+      front: 'image/dav.jpg'
+    },
+    {
+      name: 'Herman',
+      sub: 'Tryck för att visa',
+      front: 'image/her.jpg'
+    },
+    {
+      name: 'ali',
+      sub: 'Tryck för att visa',
+      front: 'image/ali.jpeg'
+    },
+    {
+      name: 'max',
+      sub: 'Tryck för att visa',
+      front: 'image/max.jpeg'
+    }
+  ];
+
+  const navScreen = document.getElementById('navScreen');
+  const cardView = document.getElementById('cardView');
+  const navList = document.getElementById('navList');
+  const frontImg = document.getElementById('frontImg');
+  const backImg = document.getElementById('backImg');
+  const closeBtn = document.getElementById('closeBtn');
+
+  let watermarkStarted = false;
+
+  // Bygger en knapp per kort i CARDS-listan, med tydlig rubrik så
+  // man vet vad man klickar på.
+  CARDS.forEach((c, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'nav-btn';
+    btn.innerHTML = `
+      <span class="nav-btn-text">
+        <span class="nav-btn-title">${c.name}</span>
+        <span class="nav-btn-sub">${c.sub || 'Tryck för att visa'}</span>
+      </span>
+      <span class="nav-btn-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </span>
+    `;
+    btn.addEventListener('click', () => openCard(i));
+    navList.appendChild(btn);
+  });
+
+  function openCard(index){
+    const c = CARDS[index];
+    frontImg.src = c.front;
+    backImg.src = SHARED_BACK;
+
+    // Om kortet råkar visas uppochner/vänt från tidigare vändning,
+    // återställ det till framsidan innan det nya kortet visas.
+    isFlipped = false;
+    card.classList.remove('flipped');
+    card.style.transform = '';
+
+    navScreen.classList.add('hidden');
+    cardView.classList.remove('hidden');
+
+    // Vattenstämpeln startas bara en gång (den ligger kvar i DOM:en
+    // och animeras vidare i bakgrunden oavsett vilket kort som visas).
+    if (!watermarkStarted){
+      watermarkStarted = true;
+      initWatermark('image/blav.png');
+    }
+  }
+
+  function goBack(){
+    cardView.classList.add('hidden');
+    navScreen.classList.remove('hidden');
+  }
+
+  closeBtn.addEventListener('click', goBack);
+
   const card = document.getElementById('card');
   const cardShadow = document.getElementById('cardShadow');
   const FLIP_MS = 400;
@@ -458,26 +656,53 @@
       last = now;
       ({ W, H } = getSize());
 
-      for (const item of items){
-        item.x += item.vx * dt;
-        item.y += item.vy * dt;
+      // Scenen har ingen storlek när kortvyn är dold (man är på
+      // startsidan) — då ska inget flyttas den här rutan, annars
+      // drar allt ihop sig mot 0,0 och fastnar i ett hörn tills man
+      // öppnar ett kort igen.
+      if (W > 0 && H > 0){
+        for (const item of items){
+          item.x += item.vx * dt;
+          item.y += item.vy * dt;
 
-        if (item.x < -OUT_MARGIN || item.x > W + OUT_MARGIN ||
-            item.y < -OUT_MARGIN || item.y > H + OUT_MARGIN){
-          respawnOutside(item, W, H);
+          if (item.x < -OUT_MARGIN || item.x > W + OUT_MARGIN ||
+              item.y < -OUT_MARGIN || item.y > H + OUT_MARGIN){
+            respawnOutside(item, W, H);
+          }
         }
 
-        item.el.style.transform = `translate(${item.x}px, ${item.y}px)`;
+        // Håller lite avstånd mellan bilderna så de inte glider ihop
+        // och överlappar varandra när banorna korsas.
+        const MIN_DIST = 70;
+        for (let i = 0; i < items.length; i++){
+          for (let j = i + 1; j < items.length; j++){
+            const a = items[i], b = items[j];
+            const dx = b.x - a.x, dy = b.y - a.y;
+            const dist = Math.hypot(dx, dy) || 0.001;
+            if (dist < MIN_DIST){
+              const push = (MIN_DIST - dist) / MIN_DIST * 6;
+              const nx = dx / dist, ny = dy / dist;
+              a.x -= nx * push;
+              a.y -= ny * push;
+              b.x += nx * push;
+              b.y += ny * push;
+            }
+          }
+        }
+
+        for (const item of items){
+          item.el.style.transform = `translate(${item.x}px, ${item.y}px)`;
+        }
       }
 
       requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
   }
-  // ===== BYT VATTENSTÄMPEL-BILD HÄR =====
-  // Byt ut "watermark.jpg" mot filnamnet/sökvägen till din egen bild
-  // (t.ex. "bilder/logga.png"). Samma bild används för alla 6.
-  initWatermark('image/blav.png');
+  // OBS: initWatermark(...) anropas inte längre här — den startas
+  // automatiskt första gången ett kort öppnas (se openCard ovan).
+  // Vill du byta vattenstämpel-bild, ändra sökvägen i openCard-
+  // funktionen ("image/blav.png").
 </script>
 
 </body>
