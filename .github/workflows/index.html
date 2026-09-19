@@ -1,9 +1,47 @@
- <div class="modal-footer">
-    <button class="close-btn">Stäng</button>  .phone{
-    position:relative;
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#121212">
+<link rel="manifest" href="data:application/manifest+json,{%22display%22:%22standalone%22,%22background_color%22:%22%23121212%22,%22theme_color%22:%22%23121212%22}">
+<title>Mitt kort</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap');
+
+  :root{
+    --terracotta:#c96a4d;
+    --teal:#3f9aa8;
+    --ink:#161514;
+    --paper:#ffffff;
+    --stone:#8a8580;
+    --mist:#121212;
+    --heart:#e8935e;
+    --home:#b18fd6;
+    --ticket:#7bc7d1;
+  }
+
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+
+  html,body{
+    margin:0;
+    height:100%;
+    background:#121212;
+    font-family:'Manrope',sans-serif;
+    overflow:hidden;
+  }
+
+  .phone{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
     width:100%;
     max-width:430px;
-    height:100dvh;
     margin:0 auto;
     background:#121212;
     display:flex;
@@ -12,6 +50,7 @@
     padding-top:env(safe-area-inset-top);
     padding-left:env(safe-area-inset-left);
     padding-right:env(safe-area-inset-right);
+    padding-bottom:env(safe-area-inset-bottom);
   }
 
   .statusbar{
@@ -36,6 +75,8 @@
     cursor:pointer;
     padding:0;
     line-height:1;
+    text-decoration:none;
+    display:inline-block;
   }
   .dots{
     display:flex;
@@ -264,7 +305,10 @@
   </div>
 
   <div class="modal-footer">
-    <button class="close-btn">Stäng</button>
+    <!-- ===== LÄGG DIN LÄNK HÄR =====
+         Byt ut "https://exempel.se" nedan mot länken du vill att
+         "Stäng"-knappen ska öppna. -->
+    <a class="close-btn" href="https://exempel.se">Stäng</a>
 
     <div class="dots">
       <div class="dot active"><span>1</span></div>
