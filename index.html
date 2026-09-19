@@ -35,10 +35,13 @@
   }
 
   .phone{
-    position:relative;
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
     width:100%;
     max-width:430px;
-    height:100dvh;
     margin:0 auto;
     background:#121212;
     display:flex;
@@ -47,6 +50,7 @@
     padding-top:env(safe-area-inset-top);
     padding-left:env(safe-area-inset-left);
     padding-right:env(safe-area-inset-right);
+    padding-bottom:env(safe-area-inset-bottom);
   }
 
   .statusbar{
